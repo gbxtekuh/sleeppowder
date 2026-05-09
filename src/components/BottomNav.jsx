@@ -4,9 +4,9 @@ import Icon from './Icon';
 const items = [
   { to: '/home', label: 'Início', icon: 'Home' },
   { to: '/playlist', label: 'Sons', icon: 'Music' },
-  { to: '/timer', label: 'Clock' },
+  { to: '/timer', label: 'Timer', icon: 'Clock' },
   { to: '/history', label: 'Histórico', icon: 'BarChart2' },
-  { to: '/settings', label: 'Perfil', icon: 'User' },
+  { to: '/settings', label: 'Ajustes', icon: 'Settings' },
 ];
 
 export default function BottomNav() {

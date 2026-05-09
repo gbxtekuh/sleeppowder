@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthProvider';
 import { usePlayer } from '../PlayerProvider';
 import { saveSession } from '../services/firestoreService';
+import { useSounds } from '../hooks/useFirestore';
 
 export default function TimerPage() {
   const { user } = useAuth();
-  const { currentSoundName } = usePlayer();
+  const { currentSoundName, currentSound } = usePlayer();
+  const { sounds } = useSounds();
   const [timeLeft, setTimeLeft] = useState(0);
   const [initialMinutes, setInitialMinutes] = useState(0);
   const [customMinutes, setCustomMinutes] = useState('');
@@ -78,10 +80,18 @@ export default function TimerPage() {
     const minutesSpent = Math.max(1, Math.round((initialMinutes * 60 - timeLeft) / 60));
     const score = Math.floor(Math.random() * 31) + 70;
 
+    // Encontrar o som atual para obter mais detalhes
+    const currentSoundData = sounds.find(s => s.id === currentSound);
+
     await saveSession(user.uid, {
       duration: minutesSpent,
       score,
       soundName: currentSoundName || 'Relaxamento',
+      soundId: currentSound || null,
+      category: currentSoundData?.category || 'Outros',
+      soundColor: currentSoundData?.color || 'var(--primary)',
+      soundIcon: currentSoundData?.icon || 'Music',
+      completedAt: new Date().toISOString(),
     });
 
     alert(`Sessão concluída! Você relaxou por ${minutesSpent} min.`);

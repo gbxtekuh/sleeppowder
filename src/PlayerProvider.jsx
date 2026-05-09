@@ -1,8 +1,12 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useAuth } from './AuthProvider';
+import { useUserSettings } from './hooks/useFirestore';
 
 const PlayerContext = createContext(null);
 
 export function PlayerProvider({ children }) {
+  const { user } = useAuth();
+  const { settings } = useUserSettings(user?.uid);
   const audioRef = useRef(new Audio());
   const [playerState, setPlayerState] = useState({
     currentSound: null,
@@ -18,10 +22,16 @@ export function PlayerProvider({ children }) {
     stateRef.current = playerState;
   }, [playerState]);
 
+  // Aplicar configurações do usuário
+  useEffect(() => {
+    const audio = audioRef.current;
+    audio.volume = settings.volume;
+  }, [settings.volume]);
+
   useEffect(() => {
     const audio = audioRef.current;
     audio.crossOrigin = 'anonymous';
-    audio.volume = 1.0;
+    audio.volume = settings.volume;
 
     const handlePlay = () => setPlayerState((prev) => ({ ...prev, isPlaying: true, isLoading: false }));
     const handlePause = () => setPlayerState((prev) => ({ ...prev, isPlaying: false, isLoading: false }));
@@ -49,7 +59,7 @@ export function PlayerProvider({ children }) {
       audio.removeEventListener('ended', handleEnded);
       audio.removeEventListener('error', handleError);
     };
-  }, []);
+  }, [settings.volume]);
 
   const playSound = useCallback(async (sound) => {
     const audio = audioRef.current;

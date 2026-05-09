@@ -1,30 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../AuthProvider';
-import { getHistory } from '../services/firestoreService';
+import { useRealtimeHistory } from '../hooks/useFirestore';
 import Icon from '../components/Icon';
 
 export default function HistoryPage() {
   const { user } = useAuth();
-  const [history, setHistory] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let mounted = true;
-
-    async function loadHistory() {
-      if (!user) return;
-      const data = await getHistory(user.uid);
-      if (mounted) {
-        setHistory(data);
-        setLoading(false);
-      }
-    }
-
-    loadHistory();
-    return () => {
-      mounted = false;
-    };
-  }, [user]);
+  const { history, loading } = useRealtimeHistory(user?.uid);
 
   return (
     <div className="content-section" style={{ paddingTop: 64 }}>

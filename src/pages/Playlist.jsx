@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../AuthProvider';
 import { usePlayer } from '../PlayerProvider';
-import { loadFavorites, saveFavorites } from '../services/firestoreService';
-import { sounds } from '../data/sounds';
+import { saveFavorites } from '../services/firestoreService';
+import { useSounds, useRealtimeFavorites } from '../hooks/useFirestore';
 import Icon from '../components/Icon';
 
 const categories = ['Todos', 'Chuva', 'Natureza', 'Mar', 'Foco', 'Sono'];
@@ -10,19 +10,10 @@ const categories = ['Todos', 'Chuva', 'Natureza', 'Mar', 'Foco', 'Sono'];
 export default function Playlist() {
   const { user } = useAuth();
   const { currentSound, isPlaying, isLoading, playSound } = usePlayer();
-  const [favorites, setFavorites] = useState(new Set());
+  const { sounds, loading: soundsLoading } = useSounds();
+  const { favorites, loading: favoritesLoading, setFavorites } = useRealtimeFavorites(user?.uid);
   const [filter, setFilter] = useState('Todos');
   const [searchQuery, setSearchQuery] = useState('');
-
-  useEffect(() => {
-    async function load() {
-      if (!user) return;
-      const ids = await loadFavorites(user.uid);
-      setFavorites(new Set(ids));
-    }
-
-    load();
-  }, [user]);
 
   const filteredSounds = useMemo(() => {
     return sounds
@@ -31,7 +22,7 @@ export default function Playlist() {
         sound.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         sound.description.toLowerCase().includes(searchQuery.toLowerCase())
       );
-  }, [filter, searchQuery]);
+  }, [sounds, filter, searchQuery]);
 
   async function handleToggleFavorite(soundId) {
     if (!user) return;
@@ -44,6 +35,8 @@ export default function Playlist() {
     setFavorites(next);
     await saveFavorites(user.uid, Array.from(next));
   }
+
+  const isLoading = soundsLoading || favoritesLoading;
 
   return (
     <div className="content-section" style={{ paddingTop: 64 }}>

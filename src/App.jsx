@@ -8,6 +8,7 @@ import Playlist from './pages/Playlist';
 import TimerPage from './pages/Timer';
 import HistoryPage from './pages/History';
 import Profile from './pages/Profile';
+import Settings from './pages/Settings';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -36,7 +37,8 @@ export default function App() {
         <Route path="/playlist" element={<ProtectedRoute><Playlist /></ProtectedRoute>} />
         <Route path="/timer" element={<ProtectedRoute><TimerPage /></ProtectedRoute>} />
         <Route path="/history" element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
-        <Route path="/settings" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
 

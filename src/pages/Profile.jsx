@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthProvider';
+import Icon from '../components/Icon';
 
 export default function Profile() {
   const { user, logout } = useAuth();
@@ -21,7 +22,20 @@ export default function Profile() {
         />
         <h3 style={{ marginBottom: 4 }}>{user?.displayName}</h3>
         <p style={{ color: 'var(--text-dim)', fontSize: 14, marginBottom: 32 }}>{user?.email}</p>
+
+        <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
+          <button
+            className="btn-secondary"
+            onClick={() => navigate('/settings')}
+            style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+          >
+            <Icon name="Settings" size={16} />
+            Configurações
+          </button>
+        </div>
+
         <button className="btn-primary" style={{ width: '100%', background: '#ef4444' }} onClick={handleLogout}>
+          <Icon name="LogOut" size={16} style={{ marginRight: 8 }} />
           Sair da Conta
         </button>
       </div>

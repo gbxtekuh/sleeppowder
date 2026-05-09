@@ -1,43 +1,39 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../AuthProvider';
 import { usePlayer } from '../PlayerProvider';
-import { getHistory } from '../services/firestoreService';
-import { sounds } from '../data/sounds';
+import { getUserStats } from '../services/firestoreService';
+import { useSounds, useRealtimeHistory } from '../hooks/useFirestore';
 import Icon from '../components/Icon';
 
 export default function Home() {
   const { user } = useAuth();
   const { playSound, currentSound, isPlaying, currentSoundName } = usePlayer();
-  const [history, setHistory] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { sounds, loading: soundsLoading } = useSounds();
+  const { history, loading: historyLoading } = useRealtimeHistory(user?.uid);
+  const [stats, setStats] = useState(null);
+  const [statsLoading, setStatsLoading] = useState(true);
 
   useEffect(() => {
-    let mounted = true;
-    async function load() {
+    async function loadStats() {
       if (!user) return;
-      const data = await getHistory(user.uid);
-      if (mounted) {
-        setHistory(data);
-        setLoading(false);
-      }
+      const data = await getUserStats(user.uid);
+      setStats(data);
+      setStatsLoading(false);
     }
 
-    load();
-    return () => {
-      mounted = false;
-    };
-  }, [user]);
+    loadStats();
+  }, [user, history]); // Recalcular quando history mudar
 
-  const stats = useMemo(() => {
-    const totalSessions = history.length;
-    const totalTime = history.reduce((sum, item) => sum + (item.duration || 0), 0);
-    const avgScore = totalSessions > 0 ? Math.round(history.reduce((sum, item) => sum + (item.score || 0), 0) / totalSessions) : 0;
-    const last = history[0] || null;
+  const recommended = useMemo(() => {
+    if (!sounds.length) return [];
+    // Recomendar sons baseado no histórico
+    const usedSounds = new Set(history.map(h => h.soundId));
+    return sounds
+      .filter(sound => !usedSounds.has(sound.id))
+      .slice(0, 3);
+  }, [sounds, history]);
 
-    return { totalSessions, totalTime, avgScore, last };
-  }, [history]);
-
-  const recommended = sounds.slice(0, 3);
+  const isLoading = soundsLoading || historyLoading || statsLoading;
 
   return (
     <div className="content-section">
@@ -59,25 +55,25 @@ export default function Home() {
         <div className="card glass stat-card">
           <Icon name="Star" size={28} />
           <span className="label">Score Médio</span>
-          <span className="value">{stats.avgScore || '--'}</span>
-          <span className="subtext">Baseado em {stats.totalSessions} sessões</span>
+          <span className="value">{stats?.avgScore || '--'}</span>
+          <span className="subtext">Baseado em {stats?.totalSessions || 0} sessões</span>
         </div>
         <div className="card glass stat-card">
           <Icon name="Clock" size={28} />
           <span className="label">Tempo Total</span>
-          <span className="value">{stats.totalTime}m</span>
+          <span className="value">{stats?.totalTime || 0}m</span>
           <span className="subtext">Minutos de relaxamento</span>
         </div>
         <div className="card glass stat-card">
           <Icon name="Zap" size={28} />
           <span className="label">Sessões</span>
-          <span className="value">{stats.totalSessions}</span>
+          <span className="value">{stats?.totalSessions || 0}</span>
           <span className="subtext">Ritual de sono ativo</span>
         </div>
         <div className="card glass stat-card">
           <Icon name="Calendar" size={28} />
           <span className="label">Frequência</span>
-          <span className="value">{stats.totalSessions > 0 ? 'Ativa' : '--'}</span>
+          <span className="value">{(stats?.totalSessions || 0) > 0 ? 'Ativa' : '--'}</span>
           <span className="subtext">Consistência mensal</span>
         </div>
       </div>
@@ -86,11 +82,11 @@ export default function Home() {
         <h3 style={{ fontSize: 18 }}>Última Sessão</h3>
       </div>
 
-      {loading ? (
+      {isLoading ? (
         <div className="empty-state">
           <p>Carregando histórico...</p>
         </div>
-      ) : stats.last ? (
+      ) : stats?.last ? (
         <div className="card glass last-session-card fade-in">
           <div className="last-session-info">
             <p style={{ color: 'var(--primary)', fontWeight: 700, fontSize: 10, textTransform: 'uppercase', marginBottom: 4 }}>
