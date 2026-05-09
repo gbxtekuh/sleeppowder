@@ -3,13 +3,13 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyC8kOC-eO7vpCh7JGvVkwVBDaTYADRgZkI',
-  authDomain: 'sleepsync-2a61f.firebaseapp.com',
-  projectId: 'sleepsync-2a61f',
-  storageBucket: 'sleepsync-2a61f.firebasestorage.app',
-  messagingSenderId: '691659587146',
-  appId: '1:691659587146:web:e9c4b2929b88deabb6b0b3',
-  measurementId: 'G-3561DNGCZK',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
