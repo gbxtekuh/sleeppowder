@@ -1,0 +1,25 @@
+using Microsoft.AspNetCore.Mvc;
+using SonoApp.Models;
+using SonoApp.Services;
+
+namespace SonoApp.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class SleepController : ControllerBase
+    {
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok(DataService.SleepList);
+        }
+
+        [HttpPost]
+        public IActionResult Post(SleepData data)
+        {
+            data.Id = DataService.SleepList.Count + 1;
+            DataService.SleepList.Add(data);
+            return Ok(data);
+        }
+    }
+}
