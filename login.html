@@ -1,10 +1,198 @@
-namespace SonoApp.Models
-{
-    public class Sound
-    {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Url { get; set; }
-        public int Duracao { get; set; }
-    }
-}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepDev | Entrar</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at top right, rgba(124, 58, 237, 0.35), transparent 35%),
+                radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.22), transparent 35%),
+                linear-gradient(135deg, #05070a, #16113a, #0b1024);
+        }
+
+        .particles {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particles span {
+            position: absolute;
+            bottom: -80px;
+            width: 8px;
+            height: 8px;
+            background: rgba(139, 92, 246, 0.55);
+            border-radius: 999px;
+            box-shadow: 0 0 22px rgba(139, 92, 246, 0.9);
+            animation: floatUp linear infinite;
+        }
+
+        .particles span:nth-child(1) { left: 8%; animation-duration: 12s; animation-delay: 0s; width: 5px; height: 5px; }
+        .particles span:nth-child(2) { left: 18%; animation-duration: 16s; animation-delay: 1s; }
+        .particles span:nth-child(3) { left: 28%; animation-duration: 13s; animation-delay: 2s; width: 10px; height: 10px; }
+        .particles span:nth-child(4) { left: 40%; animation-duration: 18s; animation-delay: .5s; }
+        .particles span:nth-child(5) { left: 52%; animation-duration: 15s; animation-delay: 3s; width: 6px; height: 6px; }
+        .particles span:nth-child(6) { left: 63%; animation-duration: 19s; animation-delay: 1.5s; }
+        .particles span:nth-child(7) { left: 74%; animation-duration: 14s; animation-delay: 2.5s; width: 9px; height: 9px; }
+        .particles span:nth-child(8) { left: 84%; animation-duration: 20s; animation-delay: 4s; }
+        .particles span:nth-child(9) { left: 92%; animation-duration: 17s; animation-delay: 5s; width: 4px; height: 4px; }
+        .particles span:nth-child(10) { left: 47%; animation-duration: 22s; animation-delay: 2s; width: 7px; height: 7px; }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-115vh) scale(1.8);
+                opacity: 0;
+            }
+        }
+
+        .login-card {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 430px;
+            padding: 52px 34px;
+            text-align: center;
+            border-radius: 34px;
+            background: rgba(255, 255, 255, 0.055);
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(22px);
+        }
+
+        .login-card::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, .8), transparent, rgba(59, 130, 246, .45));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .logo-circle {
+            width: 82px;
+            height: 82px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            border-radius: 26px;
+            margin: 0 auto 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 22px 50px rgba(139, 92, 246, 0.38);
+        }
+
+        .logo-circle i {
+            width: 38px;
+            height: 38px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        p {
+            color: var(--text-dim);
+            margin-bottom: 42px;
+            font-size: 16px;
+        }
+
+        .btn-google {
+            background: white;
+            color: #1f2937;
+            width: 100%;
+            padding: 17px;
+            border-radius: 18px;
+            border: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 13px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-google:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25);
+        }
+
+        .btn-google img {
+            width: 22px;
+            height: 22px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="particles">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="login-card">
+        <div class="logo-circle">
+            <i data-lucide="moon"></i>
+        </div>
+
+        <h1>SleepDev</h1>
+        <p>Seu ritual de sono inteligente</p>
+
+        <button id="google-login" class="btn-google">
+    <svg width="20" height="20" viewBox="0 0 48 48">
+        <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.6 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.5 29.4 4.5 24 4.5 12.9 4.5 4 13.4 4 24.5S12.9 44.5 24 44.5 44 35.6 44 24.5c0-1.3-.1-2.7-.4-4z"/>
+        <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16.1 18.9 13 24 13c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.5 29.4 4.5 24 4.5c-7.7 0-14.3 4.4-17.7 10.2z"/>
+        <path fill="#4CAF50" d="M24 44.5c5.1 0 9.8-1.7 13.4-4.6l-6.2-5.1C29.1 36.5 26.7 37.5 24 37.5c-5.2 0-9.6-3.3-11.2-7.9l-6.6 5.1C9.7 40.3 16.4 44.5 24 44.5z"/>
+        <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1.1 3.1-3.5 5.5-6.8 6.8l6.2 5.1C39.5 36.4 44 31 44 24.5c0-1.3-.1-2.7-.4-4z"/>
+    </svg>
+    Entrar com Google
+</button>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script type="module">
+        import Auth from './js/auth.js';
+
+        lucide.createIcons();
+
+        document.getElementById('google-login').onclick = () => Auth.login();
+
+        if (Auth.initAuth) {
+            Auth.initAuth();
+        } else {
+            Auth.checkAuth();
+        }
+    </script>
+</body>
+</html>

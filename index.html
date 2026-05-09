@@ -1,47 +1,56 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SleepDev | Ritual de Sono</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-* {
-margin: 0;
-padding: 0;
-font-family: 'Open Sans', sans-serif;
-}
+    <main id="app">
+        <!-- Renderização via app.js -->
+        <div id="router-view"></div>
+    </main>
 
-body{
-    height: 100vh;
-    background: linear-gradient(120deg, #e4246dd8,#530e4ed8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    <!-- Barra de Navegação Inferior -->
+    <nav class="nav-bar glass">
+        <a href="#home" class="nav-item active">
+            <i data-lucide="home"></i>
+            <span>Início</span>
+        </a>
+        <a href="#playlist" class="nav-item">
+            <i data-lucide="music"></i>
+            <span>Sons</span>
+        </a>
+        <a href="#timer" class="nav-item">
+            <i data-lucide="clock"></i>
+            <span>Timer</span>
+        </a>
+        <a href="#history" class="nav-item">
+            <i data-lucide="bar-chart-2"></i>
+            <span>Histórico</span>
+        </a>
+        <a href="#settings" class="nav-item">
+            <i data-lucide="user"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
 
-.Relogio {
-display: flex;
-align-items: center;
-justify-content: space-around;
-height: 200px;
-width: 550px;
-background: linear-gradient(120deg, #cfa3b4d8,#a51f9cd8);
-border-radius: 60px;
-box-shadow: 0px 8px 100px rgba( 0, 0, 0, .5);
+    <!-- Áudio Global -->
+    <audio id="global-audio" loop></audio>
 
-}
-.Relogio div {
-height:  150px;
-width: 150px;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-color: #fff;
-background:rgba( 5, 5, 5, .9); 
-box-shadow: 5px 5px 15px rgba( 0, 0, 0, .7);
-border-radius: 200px;
-letter-spacing: 3px;
-}
-.Relogio span{
-    font-weight: bolder;
-    font-size: 20px;
-}
-.Relogio span.tempo{
-    font-size: 10px;
-}
+    <!-- Scripts -->
+    <script type="module" src="js/app.js"></script>
+    
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
